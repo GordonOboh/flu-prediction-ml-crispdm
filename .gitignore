@@ -1,52 +1,9 @@
-# Python
 __pycache__/
 *.pyc
-*.pyo
-*.egg-info/
-.eggs/
-dist/
-build/
-*.egg
-
-# Virtual environment
 .venv/
 env/
 venv/
-
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb
-
-# Data files
-!*.xlsx
-*.csv
-*.h5
-*.hdf5
-*.zip
-
-# LaTeX build artifacts
-*.aux
-*.bbl
-*.bcf
-*.blg
-*.log
-*.out
-#*.pdf
-*.run.xml
-*.toc
-*.fdb_latexmk
-*.fls
-*.synctex.gz
-
-# OS
 .DS_Store
 Thumbs.db
-
-# IDE
 .vscode/
 .idea/
-
-Task*.md
-#!main.pdf
-main_1.tex
-name.tex

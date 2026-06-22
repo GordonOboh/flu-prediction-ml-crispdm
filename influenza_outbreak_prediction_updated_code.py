@@ -1,19 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Influenza Outbreak Prediction — CRISP-DM Project
-CS633 Data Mining, Monroe College
-
-Updates / Fixes:
-  - Removed data leakage: INF_ALL / Total_Influenza_Cases no longer used as
-    a feature. Separate "All_Features_Without_Target" and
-    "Season_Features_Without_Target" variants are used for model training.
-    Only the target column is popped for LR; DT and NN train on the
-    without-target subset.
-  - Added save_chart() helper for consistent 22-chart output.
-  - All metrics in the report (MAE, MSE) are generated from this script.
-
 Created on Wed Mar 19 18:47:00 2025
+
 @author: genti
 """
 
@@ -24,16 +13,6 @@ import matplotlib
 import sklearn
 import pandas as pd
 import matplotlib.pyplot as plt
-matplotlib.use('Agg')
-import os
-os.makedirs('Report/Assignment/flu/charts', exist_ok=True)
-_chart_idx = [0]
-def save_chart(name):
-    _chart_idx[0] += 1
-    plt.savefig(f'Report/Assignment/flu/charts/{_chart_idx[0]:02d}_{name}.png',
-                dpi=150, bbox_inches='tight', facecolor='white')
-    plt.close()
-
 import seaborn as sns
 import numpy as np
 import time
@@ -53,6 +32,11 @@ import tensorflow as tf
 from tensorflow.keras.optimizers import RMSprop
 from keras.layers import Flatten, Dropout, BatchNormalization
 from keras.callbacks import ModelCheckpoint
+
+import os, matplotlib
+matplotlib.use('Agg')
+CHART_DIR = '/home/ocd/Schools/Docs/Flu1/Report/Assignment/flu/charts/'
+os.makedirs(CHART_DIR, exist_ok=True)
 
 sns.set_style("whitegrid")
 
@@ -178,14 +162,14 @@ seasonal_inf_all_sum = df.groupby('Season')['INF_ALL'].sum()
 
 # Plotting the distribution of data points per season
 plot_bar_chart(seasonal_inf_all_sum, 'Season')
-save_chart('seasonal_cases')
+plt.savefig(f'{CHART_DIR}01_seasonal_cases.png', dpi=150, bbox_inches='tight'); plt.show(); plt.close()
 
 # Group by "Season" and compute mean for numeric columns
 season_mean = df.groupby('Season')['INF_ALL'].mean(numeric_only=True)
 
 # Plotting the distribution of data points per season
 plot_bar_chart(season_mean, 'Mean')
-save_chart('mean_seasonal_cases')
+plt.savefig(f'{CHART_DIR}02_mean_seasonal_cases.png', dpi=150, bbox_inches='tight'); plt.show(); plt.close()
 
 #create anew dataframe without outliers
 df_without_outliers = df.merge(outliers_inf_all, how='left', indicator=True).query('_merge == "left_only"').drop(columns=['_merge'])
@@ -196,7 +180,7 @@ seasonal_inf_all_sum_without_outliers = df_without_outliers.groupby('Season')['I
 
 # Plotting the distribution of data points per season
 plot_bar_chart(seasonal_inf_all_sum_without_outliers, 'Total Without Outliers')
-save_chart('seasonal_no_outliers')
+plt.savefig(f'{CHART_DIR}03_seasonal_no_outliers.png', dpi=150, bbox_inches='tight'); plt.show(); plt.close()
 
 #Plotting the winter season group by year including the outliers
 filtered_df = df[df['Season'] == 'Winter']
@@ -229,10 +213,9 @@ plt.ylabel('Influenza Cases')
 plt.title('Influenza Cases for Winter vs Mean All Seasons by Year With or Without Outliers')
 plt.legend()
 
-# Show plot
-save_chart('winter_vs_mean')
-
-# Save the processed dataset
+plt.savefig(f'{CHART_DIR}04_winter_vs_mean.png', dpi=150, bbox_inches='tight')
+plt.show()
+plt.close()
 df.to_csv("processed_influenza_data.csv", index=False)
 
 # Data Scaling for model readiness, to normalize the columns individually
@@ -246,7 +229,9 @@ sns.lineplot(data=df, x='ISO_SDATE', y='INF_A', label='Influenza A Cases')
 sns.lineplot(data=df, x='ISO_SDATE', y='INF_B', label='Influenza B Cases')
 plt.legend()
 plt.title('Influenza Cases Trend in North America')
-save_chart('influenza_trend')
+plt.savefig(f'{CHART_DIR}05_influenza_trend.png', dpi=150, bbox_inches='tight')
+plt.show()
+plt.close()
 
 
 # =============================================================================
@@ -257,15 +242,15 @@ save_chart('influenza_trend')
 feature_sets = {
     'All_Features': ['ISO_YEAR', 'ISO_WEEK', 'Month', 'INF_ALL_LAG_1', 
                      'INF_ALL_LAG_2', 'INF_ALL_LAG_4', 'INF_A', 'INF_B', 
-                     'ILI_ACTIVITY', 'SPEC_PROCESSED_NB', 
+                     'ILI_ACTIVITY', 'INF_ALL', 'SPEC_PROCESSED_NB', 
                      'Total_Influenza_Cases'],
     'All_Features_Without_Target': ['ISO_YEAR', 'ISO_WEEK', 'Month', 
                     'INF_ALL_LAG_1', 'INF_ALL_LAG_2', 'INF_ALL_LAG_4', 
-                    'INF_A', 'INF_B', 'ILI_ACTIVITY', 
+                    'INF_A', 'INF_B', 'ILI_ACTIVITY', 'INF_ALL', 
                     'SPEC_PROCESSED_NB'],
-    'Season_Features': ['Season_numeric', 'SPEC_PROCESSED_NB', 
+    'Season_Features': ['Season_numeric', 'INF_ALL', 'SPEC_PROCESSED_NB', 
                         'Total_Influenza_Cases'],
-    'Season_Features_Without_Target': ['Season_numeric', 'SPEC_PROCESSED_NB']
+    'Season_Features_Without_Target': ['Season_numeric', 'INF_ALL', 'SPEC_PROCESSED_NB']
 }
 
 # Define the target column and the look-back period (number of past time steps).
@@ -315,6 +300,7 @@ data['Season_numeric'] = data['Season'].astype('category').cat.codes
 # =============================================================================
 print("\nPearson Correlation Heatmaps for Each Candidate Feature Set:")
 colormap = sns.diverging_palette(h_neg=45, h_pos=225, s=81, l=68, sep=30, center='light', as_cmap=True)
+_fig_heatmap_num = 6
 # Loop over each candidate feature set defined earlier.
 for name, feature_list in feature_sets.items():
     # Create a subset of the data including the current feature set and the target.
@@ -327,7 +313,10 @@ for name, feature_list in feature_sets.items():
     sns.heatmap(corr_matrix, annot=True, cmap=colormap, fmt=".2f")
     plt.title(f"Pearson Correlation Heatmap for Feature Set: {name}")
     plt.tight_layout()
-    save_chart(f'corr_heatmap_{name}')
+    plt.savefig(f'{CHART_DIR}{_fig_heatmap_num:02d}_corr_heatmap_{name}.png', dpi=150, bbox_inches='tight')
+    _fig_heatmap_num += 1
+    plt.show()
+    plt.close()
     
 
 # -------------------------------
@@ -351,7 +340,7 @@ def maddest(d, axis=None):
     return np.mean(np.absolute(d - np.mean(d, axis)), axis)
 
 def denoise_signal(x, wavelet='db4', level=1):
-    x = np.array(x, copy=True)
+    x = np.copy(x)  # ensure writable
     coeff = pywt.wavedec(x, wavelet, mode="per")
     sigma = (1/0.6745) * maddest(coeff[-level])
 
@@ -386,7 +375,9 @@ sns.lineplot(data=df_slice,
              ax=ax)
 
 ax.legend([target, 'Wavelet'], loc='lower left')
-save_chart('wavelet_denoising')
+plt.savefig(f'{CHART_DIR}10_wavelet_denoising.png', dpi=150, bbox_inches='tight')
+plt.show()
+plt.close()
 
 # Comparison of DWT to a simple moving average:
 data['MA5'] = data[target].rolling(5).mean()
@@ -418,7 +409,9 @@ sns.lineplot(data=df_slice,
 
 
 ax.legend([target,'MA', 'Wavelet'], loc='lower left')
-save_chart('ma_comparison')
+plt.savefig(f'{CHART_DIR}11_ma_comparison.png', dpi=150, bbox_inches='tight')
+plt.show()
+plt.close()
 
 # Comparison of DWT to an exponentially weighted moving average:
 data['EMA5'] = data[target].ewm(span=5).mean()
@@ -450,7 +443,9 @@ sns.lineplot(data=df_slice,
 
 
 ax.legend([target,'EWA', 'Wavelet'], loc='lower left')
-save_chart('ewa_comparison')
+plt.savefig(f'{CHART_DIR}12_ewa_comparison.png', dpi=150, bbox_inches='tight')
+plt.show()
+plt.close()
 
 
 # Initialize dictionaries to store MAE and MSE results
@@ -460,6 +455,7 @@ results_mse = {'Feature_Set': [], 'Model': [], 'MSE': []}
 
 # Define the two feature sets to loop over
 feature_set_keys = ['All_Features', 'Season_Features']
+_model_fig_num = 13
 
 # Loop over each feature set
 for fs_key in feature_set_keys:
@@ -480,16 +476,19 @@ for fs_key in feature_set_keys:
     # For plotting, define a color palette (adjust colors as desired)
     color_pal = ['#1f77b4', '#ff7f0e', '#2ca02c']
 
-    # Plot the dataset splits using the target column
+    # Plot the dataset splits using the 'Close' column
     f, ax = plt.subplots(figsize=(14,6.5))
-    data.loc[train_df.index, target].plot(ax=ax, label='Training Set', color='gray')
-    data.loc[val_df.index, target].plot(ax=ax, label='Validation Set', color=color_pal[0])
-    data.loc[test_df.index, target].plot(ax=ax, label='Testing Set', color=color_pal[2])
+    train_df['INF_ALL'].plot(ax=ax, label='Training Set', color='gray')
+    val_df['INF_ALL'].plot(ax=ax, label='Validation Set', color=color_pal[0])
+    test_df['INF_ALL'].plot(ax=ax, label='Testing Set', color=color_pal[2])
     plt.axvline(x=str(val_start), color='gray', linestyle='--', linewidth=1.3)
     plt.axvline(x=str(test_start), color='gray', linestyle='--', linewidth=1.3)
     ax.legend(['Training Set', 'Validation Set', 'Testing Set'])
     plt.title(f"Dataset Split by Date ({fs_key})")
-    save_chart(f'dataset_split_{fs_key}')
+    plt.savefig(f'{CHART_DIR}{_model_fig_num:02d}_dataset_split_{fs_key}.png', dpi=150, bbox_inches='tight')
+    _model_fig_num += 1
+    plt.show()
+    plt.close()
     
     # -------------------------------
     # Linear Regression Model
@@ -543,14 +542,24 @@ for fs_key in feature_set_keys:
         sns.lineplot(x=plot_dates, y=pred_val, color=color_pal[0], ax=ax)
         ax.set(xlabel='Date', ylabel='Total Influenza Cases', title=f'Linear Regression: True vs Predicted Values ({fs_key})')
         ax.legend(['True Values', 'Predicted Values'])
-        save_chart(f'lr_predictions_{fs_key}')
+        plt.show()
+        plt.close()
     
     plot_predictions(model_linreg, X_val, y_val)
+    plt.savefig(f'{CHART_DIR}{_model_fig_num:02d}_lr_predictions_{fs_key}.png', dpi=150, bbox_inches='tight')
+    _model_fig_num += 1
+    plt.close()
     
     # -------------------------------
     # Models on % Change Data (Decision Tree & NN)
     # -------------------------------
-    # Calculate percentage change for the target
+    # Calculate percentage change for specific columns and the target
+    for df in [X_train, X_val, X_test]:
+        df['Open_pct_change'] = df['SPEC_PROCESSED_NB'].pct_change()
+        df['Open_pct_change'].iloc[0] = 0 
+        df['Close_pct_change'] = df['INF_ALL'].pct_change()
+        df['Close_pct_change'].iloc[0] = 0 
+    
     y_train_pct = y_train.pct_change()
     y_train_pct.iloc[0] = 0
     y_val_pct = y_val.pct_change()
@@ -601,7 +610,10 @@ for fs_key in feature_set_keys:
     plt.ylabel('% Change in Total Influenza Cases')
     plt.title(f'Decision Tree Regressor: True vs Predicted % Change (Validation Set) - {fs_key}')
     plt.legend()
-    save_chart(f'dt_predictions_{fs_key}')
+    plt.savefig(f'{CHART_DIR}{_model_fig_num:02d}_dt_predictions_{fs_key}.png', dpi=150, bbox_inches='tight')
+    _model_fig_num += 1
+    plt.show()
+    plt.close()
     
     # -------------------------------
     # Neural Network Regressor
@@ -668,7 +680,10 @@ for fs_key in feature_set_keys:
     plt.ylabel('% Change in Total Influenza Cases')
     plt.title(f'Neural Network Regressor: True vs Predicted % Change (Validation Set) - {fs_key}')
     plt.legend()
-    save_chart(f'nn_predictions_{fs_key}')
+    plt.savefig(f'{CHART_DIR}{_model_fig_num:02d}_nn_predictions_{fs_key}.png', dpi=150, bbox_inches='tight')
+    _model_fig_num += 1
+    plt.show()
+    plt.close()
 
 # =============================================================================
 # Bar Plot Comparing MAE for All Models
@@ -679,7 +694,9 @@ sns.barplot(x='Model', y='MAE', hue='Feature_Set', data=results_df)
 plt.title('MAE Comparison for All Models by Feature Set')
 plt.ylabel('MAE')
 plt.xlabel('Model')
-save_chart('mae_comparison')
+plt.savefig(f'{CHART_DIR}21_mae_comparison.png', dpi=150, bbox_inches='tight')
+plt.show()
+plt.close()
 
 # =============================================================================
 # Bar Plot Comparing MSE for All Models
@@ -690,12 +707,18 @@ sns.barplot(x='Model', y='MSE', hue='Feature_Set', data=results_mse_df)
 plt.title('MSE Comparison for All Models by Feature Set')
 plt.ylabel('MSE')
 plt.xlabel('Model')
-save_chart('mse_comparison')
+plt.savefig(f'{CHART_DIR}22_mse_comparison.png', dpi=150, bbox_inches='tight')
+plt.show()
+plt.close()
 
 # Combine the MAE and MSE results into one DataFrame for comparison
 comparison_df = pd.merge(results_df, results_mse_df, on=['Feature_Set', 'Model'])
 print("\nComparison of MAE and MSE for All Models by Feature Set:")
 print(comparison_df.to_string(index=False))
+
+CSV_PATH = '/home/ocd/Schools/Docs/Flu1/KPM/model_performance_metrics.csv'
+comparison_df.to_csv(CSV_PATH, index=False)
+print(f"\nMetrics saved to {CSV_PATH}")
 
 # =============================================================================
 # Timer Stop

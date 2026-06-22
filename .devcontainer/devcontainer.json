@@ -1,0 +1,14 @@
+{
+  "name": "flu-prediction-ml-crispdm",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "postCreateCommand": "",
+  "postStartCommand": "pip install -r requirements.txt",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "james-yu.latex-workshop",
+        "ms-python.python"
+      ]
+    }
+  }
+}

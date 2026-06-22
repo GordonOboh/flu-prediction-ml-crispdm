@@ -1,9 +1,0 @@
-\section*{Executive Summary}
-
-This project applies the CRISP-DM methodology to influenza surveillance data from the WHO Global Influenza Surveillance and Response System (GISRS), covering the United States and Canada from 1997 to 2025 (3,272 weekly observations). The goal is to predict weekly influenza case counts using machine learning models to support early detection and public health preparedness.
-
-The dataset was cleaned using forward-fill for missing values and IQR-based outlier detection. Feature engineering included lag features (1, 2, and 4 weeks), seasonal encoding, and wavelet denoising for noise reduction. Two feature sets were evaluated: a comprehensive All\_Features set (10 predictors including temporal, viral strain, and activity indicators) and a reduced Season\_Features set.
-
-Three modeling approaches were compared: Linear Regression (as a baseline), Decision Tree Regressor, and a Neural Network (MLP with batch normalization and dropout). Models were trained on data from 1997--2019, validated on 2020--2022, and tested on 2023--2024. Linear Regression using All\_Features achieved a Mean Absolute Error (MAE) of 45.76 cases, while the Neural Network achieved the best performance on percentage-change predictions with an MAE of 0.37.
-
-The results demonstrate that machine learning can provide actionable influenza forecasts. The Neural Network offers the best balance of accuracy and complexity, while Linear Regression provides an interpretable baseline. Recommended next steps include incorporating additional external features (e.g., weather, mobility data) and exploring more advanced time-series architectures such as LSTMs or Transformers.
