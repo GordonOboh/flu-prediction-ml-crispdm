@@ -16,7 +16,7 @@ The data source for this project is the \href{https://app.powerbi.com/view?r=eyJ
 
 The dataset contains multiple attributes relevant to the influenza cases in the region. Below there is a table with the main attributes and their description:
 
-\begin{longtable}{|p{3cm}|p{4cm}|p{3cm}|p{3.5cm}|}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{2.5cm}|>{\raggedright\arraybackslash}p{3.7cm}|}
 \hline
 Column Name & Description & Data Type & Data Range \\
 \hline
@@ -36,7 +36,13 @@ Column Name & Description & Data Type & Data Range \\
 \hline
 \texttt{AH1}, \texttt{AH1N12009}, \texttt{AH3}, \texttt{AH5}, \texttt{ANOTSUBTYPED}, \texttt{BNOTDETERMINED}, \texttt{BVIC}, \texttt{BYAM}, \texttt{SPEC\_PROCESSED\_NB}, \texttt{SPEC\_RECEIVED\_NB} & Influenza A and B subtypes & Integer & 0-48835 \\
 \hline
-\texttt{ILI\_ACTIVITY} & Level of influenza-like illness activity & Categorical & 1-No report; 2-No activity; 3-Sporadic activity; 4-Local activity; 5-Regional activity; 6-Widespread activity \\
+\texttt{ILI\_ACTIVITY} & Level of influenza-like illness activity & Categorical &
+1-No report\newline
+2-No activity\newline
+3-Sporadic activity\newline
+4-Local activity\newline
+5-Regional activity\newline
+6-Widespread activity \\
 \hline
 \texttt{COUNTRY\_CODE} & ISO3 country code & String & USA, CAN, BUR \\
 \hline
@@ -48,7 +54,7 @@ Column Name & Description & Data Type & Data Range \\
 
 Exploring the data, we observe that the number of influenza cases fluctuates seasonally, indicating the need for a time series approach to model the data effectively. The dataset includes the expected fields required for analysis, such as \texttt{INF\_A}, \texttt{INF\_B}, and \texttt{INF\_ALL}, which are critical for understanding influenza trends. However, there are missing values in some of the subtype categories of the influenza virus. While these missing values will need to be addressed during data preparation, they are not expected to significantly impact the overall performance of the influenza prediction model. The records were dropped due to excessive missingness of data.
 
-\begin{longtable}{|p{4cm}|p{4cm}|p{4cm}|}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}|}
 \hline
 Column Name & Missing Count & Missing Percentage \\
 \hline
