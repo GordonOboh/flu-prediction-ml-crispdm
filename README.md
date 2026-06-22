@@ -117,7 +117,7 @@ All non-linear models were trained on **percentage change** of the target variab
 > Full metrics: [`KPM/model_performance_metrics.csv`](./KPM/model_performance_metrics.csv)
 
 | Feature Set | Model | MAE | MSE |
-|---|---|---|---|---|
+|---|---|---|---|
 | **All Features** | **Neural Network (NN)** | **0.387** | **1.687** |
 | All Features | Decision Tree (DT) | 0.318 | 1.046 |
 | All Features | Linear Regression (LR) | ~0.000 | ~0.000 |
@@ -170,7 +170,7 @@ All defined business objectives were met: prediction accuracy, timely trend dete
 ## Tech Stack
 
 | Category | Libraries |
-|---|---|---|
+|---|---|
 | Data manipulation | `pandas`, `numpy` |
 | Classical ML | `scikit-learn` |
 | Deep Learning | `tensorflow` / `keras` |
