@@ -1,0 +1,14 @@
+{
+  "name": "flu-prediction-ml-crispdm",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-publishers texlive-bibtex-extra texlive-fonts-recommended biber",
+  "postStartCommand": "pip install -r requirements.txt",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "james-yu.latex-workshop",
+        "ms-python.python"
+      ]
+    }
+  }
+}
