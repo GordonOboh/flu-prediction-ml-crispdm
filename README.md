@@ -184,15 +184,15 @@ All defined business objectives were met: prediction accuracy, timely trend dete
 ```
 ├── influenza_outbreak_prediction_updated_code.py   # Full analysis & model pipeline
 ├── DataExport_AMR_NA_020425.xlsx                   # Raw GISRS dataset
-├── processed_influenza_data.csv                    # Cleaned & engineered data
-├── best_model_All_Features.h5                      # Trained NN weights (All Features)
-├── best_model_Season_Features.h5                   # Trained NN weights (Season Features)
+├── CS633_Influenza_Outbreak_Prediction_Final_CRISP-DM.docx  # Original CRISP-DM report (DOCX)
 ├── Report/
 │   └── Assignment/flu/
 │       └── charts/                                 # 22 generated visualizations
 ├── KPM/
 │   └── model_performance_metrics.csv               # Model evaluation metrics
 ├── requirements.txt                                # Python dependencies
+├── .devcontainer/
+│   └── devcontainer.json                           # Codespaces config
 ├── .gitignore
 └── README.md
 ```
