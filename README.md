@@ -195,12 +195,12 @@ All defined business objectives were met: prediction accuracy, timely trend dete
 │   ├── flu_prediction_report.tex                   # LaTeX source
 │   ├── preamble.tex                                # Document class & packages
 │   ├── bibliography.bib                            # 7 bibliographic references
+│   ├── packages_latex.txt                          # Required LaTeX packages
 │   └── Assignment/flu/
 │       ├── Phase [1-5].tex                         # CRISP-DM phase documents
 │       └── charts/                                 # 22 generated visualizations
 ├── KPM/
 │   └── model_performance_metrics.csv               # Model evaluation metrics
-├── packages_latex.txt                              # Required LaTeX packages
 ├── requirements.txt                                # Python dependencies
 ├── .gitignore
 └── README.md
@@ -224,9 +224,21 @@ python influenza_outbreak_prediction_updated_code.py
 
 This generates all 22 charts and the model performance metrics.
 
-### LaTeX Report
+### LaTeX Dependencies
 
-Compile the report (requires a full TeX distribution with `biber`):
+**Option 1 — apt (Ubuntu/Debian):**
+```bash
+sudo apt-get install texlive-latex-base texlive-latex-extra texlive-publishers \
+  texlive-bibtex-extra texlive-fonts-recommended biber
+```
+
+**Option 2 — tlmgr (full TeX Live):**
+```bash
+cd Report
+xargs sudo tlmgr install < packages_latex.txt
+```
+
+### Compile Report
 
 ```bash
 cd Report
