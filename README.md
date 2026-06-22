@@ -182,17 +182,17 @@ All defined business objectives were met: prediction accuracy, timely trend dete
 ## Project Structure
 
 ```
-├── influenza_outbreak_prediction_updated_code.py   # Full analysis & model pipeline
-├── DataExport_AMR_NA_020425.xlsx                   # Raw GISRS dataset
+├── influenza_outbreak_prediction_updated_code.py            # Full analysis & model pipeline
+├── DataExport_AMR_NA_020425.xlsx                            # Raw GISRS dataset
 ├── CS633_Influenza_Outbreak_Prediction_Final_CRISP-DM.docx  # Original CRISP-DM report (DOCX)
 ├── Report/
 │   └── Assignment/flu/
-│       └── charts/                                 # 22 generated visualizations
+│       └── charts/                                          # 22 generated visualizations
 ├── KPM/
-│   └── model_performance_metrics.csv               # Model evaluation metrics
-├── requirements.txt                                # Python dependencies
+│   └── model_performance_metrics.csv                        # Model evaluation metrics
+├── requirements.txt                                         # Python dependencies
 ├── .devcontainer/
-│   └── devcontainer.json                           # Codespaces config
+│   └── devcontainer.json                                    # Codespaces config
 ├── .gitignore
 └── README.md
 ```
