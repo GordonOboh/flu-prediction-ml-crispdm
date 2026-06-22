@@ -1,0 +1,7 @@
+Feature Set,Model,MAE,MSE
+All Features,Simple Linear Regression,45.763969,3981.419
+All Features,Simple Decision Tree,0.774098,2.062631
+All Features,Neural Network Regressor,0.390836,1.662638
+Seasonal Features,Simple Linear Regression,2061.554912,9204389
+Seasonal Features,Simple Decision Tree,11.167341,14898.67
+Seasonal Features,Neural Network Regressor,0.492063,1.710484
