@@ -35,7 +35,8 @@ from keras.callbacks import ModelCheckpoint
 
 import os, matplotlib
 matplotlib.use('Agg')
-CHART_DIR = '/home/ocd/Schools/Docs/Flu1/Report/Assignment/flu/charts/'
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CHART_DIR = os.path.join(SCRIPT_DIR, 'Report/Assignment/flu/charts/')
 os.makedirs(CHART_DIR, exist_ok=True)
 
 sns.set_style("whitegrid")
@@ -542,11 +543,11 @@ for fs_key in feature_set_keys:
         sns.lineplot(x=plot_dates, y=pred_val, color=color_pal[0], ax=ax)
         ax.set(xlabel='Date', ylabel='Total Influenza Cases', title=f'Linear Regression: True vs Predicted Values ({fs_key})')
         ax.legend(['True Values', 'Predicted Values'])
+        plt.savefig(f'{CHART_DIR}{_model_fig_num:02d}_lr_predictions_{fs_key}.png', dpi=150, bbox_inches='tight')
         plt.show()
         plt.close()
     
     plot_predictions(model_linreg, X_val, y_val)
-    plt.savefig(f'{CHART_DIR}{_model_fig_num:02d}_lr_predictions_{fs_key}.png', dpi=150, bbox_inches='tight')
     _model_fig_num += 1
     plt.close()
     
@@ -716,7 +717,7 @@ comparison_df = pd.merge(results_df, results_mse_df, on=['Feature_Set', 'Model']
 print("\nComparison of MAE and MSE for All Models by Feature Set:")
 print(comparison_df.to_string(index=False))
 
-CSV_PATH = '/home/ocd/Schools/Docs/Flu1/KPM/model_performance_metrics.csv'
+CSV_PATH = os.path.join(SCRIPT_DIR, 'KPM/model_performance_metrics.csv')
 comparison_df.to_csv(CSV_PATH, index=False)
 print(f"\nMetrics saved to {CSV_PATH}")
 
