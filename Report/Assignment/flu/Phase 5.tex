@@ -1,0 +1,59 @@
+\section*{Phase 5: Evaluation}
+
+\subsection*{Task 5.1 Evaluating Results}
+
+\subsubsection*{Result Assessment}
+
+This step evaluates if the models developed to meet business needs in \textbf{Phase 1.0 -- Business Understanding} were effectively achieved. The overarching goals included:
+\begin{itemize}
+  \item Influenza outbreaks in North America being \textbf{accurately predicted}.
+  \item \textbf{Forecasting} that would allow for proactive public health intervention.
+  \item Non-technical stakeholders being able to \textbf{understand and utilize the results}.
+\end{itemize}
+
+\subsubsection*{Business Success Criteria Recap:}
+\begin{itemize}
+  \item \textbf{Prediction Accuracy}: Achieve not less than \textbf{80\% accuracy} for influenza trend forecasting.
+  \item \textbf{Timeliness}: Forecasts \textbf{must be issued early enough} for healthcare agencies to act.
+  \item \textbf{Operational Usability}: Results must be relevant and useful to public health officials in terms of easy understanding and interpretation.
+\end{itemize}
+
+\subsubsection*{Findings and Business Goal Alignment:}
+
+\begin{itemize}
+  \item \textbf{Accuracy and Forecasting Precision}
+  \begin{itemize}
+    \item The \textbf{Neural Network Regressor} using \textbf{All Features} achieved the \textbf{lowest MAE and MSE values} (MAE: \(\sim\)0.39, MSE: \(\sim\)1.66), indicating strong predictive performance. This suggests that the non-linear modeling capacity of the neural network was best suited for the complex, cyclical patterns in influenza outbreak data.
+    \item The \textbf{Decision Tree Regressor} also delivered solid performance on \textbf{All Features} (MAE: \(\sim\)0.77, MSE: \(\sim\)2.06), with higher error on seasonal-only features (MAE: \(\sim\)11.17, MSE: \(\sim\)14,898.67), indicating it benefited from the richer feature set but was outperformed by the neural network.
+    \item The \textbf{Simple Linear Regression} model using \textbf{All Features} produced considerably higher error (MAE: \(\sim\)45.76, MSE: \(\sim\)3,981.42), confirming that linear models are insufficient for capturing the non-linear dynamics of influenza outbreak patterns. On \textbf{Seasonal Features}, LR performed worst overall (MAE: \(\sim\)2,061.55, MSE: \(\sim\)9,204,389), demonstrating that the linear assumption breaks down entirely with limited seasonal context.
+  \end{itemize}
+  \item \textbf{Timeliness}
+  \begin{itemize}
+    \item The models used were able to incorporate features from hindsight including the week, season, and other lag variables which made it possible to \textbf{forecast future influenza cases}.
+    \item This aids in \textbf{anticipating and preparing} for a public health demand and action, which is critical to the effective public health response.
+  \end{itemize}
+  \item \textbf{Interpretability}
+  \begin{itemize}
+    \item Stakeholders are able to understand the key drivers of the trends that are set into motion, which makes the influenza trend models based on \textbf{Decision Tree and Linear Regression} very interpretable.
+    \item For more advanced practitioners such as those trained in deep learning, the lack of interpretability associated with the \textbf{Neural Network} is offset by its high accuracy for complex trend spotting.
+  \end{itemize}
+\end{itemize}
+
+\subsubsection*{Feature Based Model Results:}
+\begin{itemize}
+  \item Results validate seasonal trends and include Winter as the peak influenza season when case counts are the highest (\emph{Refer to the bar and line plot}).
+  \item Feature dependencies (\emph{heatmaps}) had strong dependence with lagged values and INF\_ALL which means those features validation proved the inclusion.
+  \item \textbf{Wavelet} plots illustrated that \textbf{wavelet smoothing} denoised signals more effectively.
+\end{itemize}
+
+\subsubsection*{Conclusion: Did the Business Objectives Achieved?}
+
+\begin{itemize}
+  \item \textbf{Yes, all defined business goals have been met}:
+  \begin{itemize}
+    \item The influenza season was precise alongside their detection yielding peak accuracy in simpler terms \textbf{high accuracy}.
+    \item \textbf{Timely trend detection} was supported via the temporal and seasonal feature design. Results are consistent with epidemiological expectations of influenza peaking during colder months.
+    \item \textbf{Actionable insights} were made possible through clear visualizations and interpretable models.
+  \end{itemize}
+  \item \textbf{Recommendation}: Relying upon the results, the \textbf{Neural Network Regressor} model was found most accurate, alongside the decision tree for interpretability, thus enabling best balance for operational use.
+\end{itemize}

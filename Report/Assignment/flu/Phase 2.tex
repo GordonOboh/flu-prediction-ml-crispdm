@@ -1,0 +1,107 @@
+\section*{Phase 2: Data Understanding}
+
+\subsection*{Task 2.1 Gathering Data}
+
+\subsubsection*{Data Requirements}
+
+The dataset used for this project is procured from the \href{https://app.powerbi.com/view?r=eyJrIjoiNjViM2Y4NjktMjJmMC00Y2NjLWFmOWQtODQ0NjZkNWM1YzNmIiwidCI6ImY2MTBjMGI3LWJkMjQtNGIzOS04MTBiLTNkYzI4MGFmYjU5MCIsImMiOjh9}{Global Influenza Surveillance and Response System (GISRS)} (\textcite{who_flunet}). The data includes the weekly influenza cases reported by different national health agencies. This data ranges from 1997 to 2025. Some of the data components are time attributes like year, week, month and date. Types of specimens in which influenza virus antigen was detected like \texttt{AH1}, \texttt{AH1N12009}, \texttt{AH3}, \texttt{AH5}, \texttt{ANOTSUBTYPED}, \texttt{BNOTDETERMINED}, \texttt{BVIC}, \texttt{BYAM}, \texttt{SPEC\_PROCESSED\_NB} and \texttt{SPEC\_RECEIVED\_NB}. All cases of influence detected and subtypes, \texttt{INF\_A}, \texttt{INF\_B}, \texttt{INF\_ALL} and \texttt{INF\_NEGATIVE} for cases that the influence was not detected. Another indicator is the \texttt{ILI\_ACTIVITY} (Influenza-like Illness) which gives an indication of the level of the virus activity. The time component of the data, \texttt{ISO\_WEEK}, \texttt{ISO\_WEEKSTARTDATE}, \texttt{ISO\_YEAR}, and \texttt{ISOYW}. The region and the transmission zones given by \texttt{COUNTRY\_CODE}, \texttt{ITZ}, \texttt{ORIGIN\_SOURCE} and \texttt{WHOREGION}.
+
+\subsubsection*{Data Availability/Selection Criteria}
+
+The data source for this project is the \href{https://app.powerbi.com/view?r=eyJrIjoiNjViM2Y4NjktMjJmMC00Y2NjLWFmOWQtODQ0NjZkNWM1YzNmIiwidCI6ImY2MTBjMGI3LWJkMjQtNGIzOS04MTBiLTNkYzI4MGFmYjU5MCIsImMiOjh9}{Global Influenza Surveillance and Response System (GISRS)}, managed by the World Health Organization (WHO). This is the sole aggregate source used for data collection. The GISRS platform provides basic filtering options, including country, 5-time ranges, WHO Region and Influenza Transmission Zone. A single dataset file was obtained from the WHO GISRS repository. This file was pre-filtered to include data specifically for the United States (USA) and Canada and within a time range of December 1997 to February 2025 and provided in an Excel format (.xlsx file) ensuring relevance to the project's geographical scope.
+
+\subsection*{Task 2.2 Describing Data}
+
+\subsubsection*{Data Description}
+
+The dataset contains multiple attributes relevant to the influenza cases in the region. Below there is a table with the main attributes and their description:
+
+\begin{longtable}{|p{3cm}|p{4cm}|p{3cm}|p{3.5cm}|}
+\hline
+Column Name & Description & Data Type & Data Range \\
+\hline
+\endhead
+\hline
+\texttt{ISO\_YEAR} & The year of the report & Integer & 1997-2025 \\
+\hline
+\texttt{ISO\_WEEK} & The week of the report & Integer & 1-53 \\
+\hline
+\texttt{ISO\_SDATE} & Start date of the week & DateTime & 1-31 \\
+\hline
+\texttt{INF\_ALL} & Total confirmed influenza cases & Integer & 1-49007 \\
+\hline
+\texttt{INF\_A} & Influenza A cases & Integer & 1-48835 \\
+\hline
+\texttt{INF\_B} & Influenza B cases & Integer & 1-11264 \\
+\hline
+\texttt{AH1}, \texttt{AH1N12009}, \texttt{AH3}, \texttt{AH5}, \texttt{ANOTSUBTYPED}, \texttt{BNOTDETERMINED}, \texttt{BVIC}, \texttt{BYAM}, \texttt{SPEC\_PROCESSED\_NB}, \texttt{SPEC\_RECEIVED\_NB} & Influenza A and B subtypes & Integer & 0-48835 \\
+\hline
+\texttt{ILI\_ACTIVITY} & Level of influenza-like illness activity & Categorical & 1-No report; 2-No activity; 3-Sporadic activity; 4-Local activity; 5-Regional activity; 6-Widespread activity \\
+\hline
+\texttt{COUNTRY\_CODE} & ISO3 country code & String & USA, CAN, BUR \\
+\hline
+\texttt{ITZ} & Influenza transmission zone & String & North America \\
+\hline
+\texttt{ORIGIN\_SOURCE} & Surveillance site type & Categorical & SENTINEL, NONSENTINEL, NOTDEFINED \\
+\hline
+\end{longtable}
+
+Exploring the data, we observe that the number of influenza cases fluctuates seasonally, indicating the need for a time series approach to model the data effectively. The dataset includes the expected fields required for analysis, such as \texttt{INF\_A}, \texttt{INF\_B}, and \texttt{INF\_ALL}, which are critical for understanding influenza trends. However, there are missing values in some of the subtype categories of the influenza virus. While these missing values will need to be addressed during data preparation, they are not expected to significantly impact the overall performance of the influenza prediction model. The records were dropped due to excessive missingness of data.
+
+\begin{longtable}{|p{4cm}|p{4cm}|p{4cm}|}
+\hline
+Column Name & Missing Count & Missing Percentage \\
+\hline
+\endhead
+\hline
+\texttt{INF\_A} & 409 & 12.5\% \\
+\hline
+\texttt{BVIC} & 2898 & 88.57\% \\
+\hline
+\texttt{BYAM} & 2140 & 65.4\% \\
+\hline
+\texttt{BNOTDETERMINED} & 307 & 9.38\% \\
+\hline
+\texttt{INF\_B} & 634 & 19.38\% \\
+\hline
+\texttt{INF\_ALL} & 347 & 10.61\% \\
+\hline
+\texttt{INF\_NEGATIVE} & 2128 & 65.04\% \\
+\hline
+\texttt{ILI\_ACTIVITY} & 0 & 0.0\% \\
+\hline
+\end{longtable}
+
+\subsection*{Task 2.3 Exploring Data}
+
+\subsubsection*{Exploratory Report}
+
+The total number of influenza cases is given by \texttt{INF\_ALL} which looks like a seasonal pattern with peak number of cases in winter. The dataset shows difference between years, telling us different outbreaks.
+
+\subsubsection*{Correlation Analysis}
+
+There is a strong correlation between \texttt{INF\_ALL} and \texttt{INF\_A}/\texttt{INF\_B}, showing that there are only two main strains of influenza. On the other hand, \texttt{ILI\_ACTIVITY} tells the connection between the influenza cases reported, either they are not related, locally related or widespread.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{06_corr_heatmap_All_Features.png}
+\caption{Correlation heatmap of all features.}
+\end{figure}
+
+\subsubsection*{Missing Data}
+
+There is data missing on the influenza subtype columns (\texttt{AH1}, \texttt{AH3} etc.), this will require removal or substitution strategy. Additionally, the \texttt{INF\_A}, \texttt{INF\_B}, and \texttt{INF\_ALL} columns have some missing entries, accounting for approximately 7.2\% of the data. However, during the initial exploratory analysis, no issues were observed in the time-related columns, which appear to be complete and consistent.
+
+\subsection*{Task 2.4 Verifying Data Quality}
+
+\subsubsection*{Data Completeness}
+
+Major part of the data (around 95\%) contains complete influenza case counts and the main strain types. Time related records contain complete data. There is missing data on the subtype of the influenza cases that will require data manipulation.
+
+\subsubsection*{Data Accuracy and Consistency}
+
+It appears that the dataset has no duplicate records and no negative values in case counts. Initial verification was done for the week periods align with 1-52 range and the weekly report looks in a consistent time structure.
+
+\subsubsection*{Data Issues}
+
+For the missing data of the influenza subtypes we can utilize forward-fill techniques in Pandas, propagating the last valid observation to next valid (\textcite{pandas_ffill}). If outliers are identified, will not be removed, as they indicate real world cases outside the outbreaks.
